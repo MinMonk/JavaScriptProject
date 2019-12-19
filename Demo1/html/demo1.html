@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="../css/jquery.json-viewer.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="../js/jquery-1.11.3.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../js/jquery.json-viewer.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../js/test2.js" charset="UTF-8"></script>
+    <style>
+        textarea {
+            width: 800px;
+            height: 100px;
+        }
+
+        .code-string {
+            color: #993300;
+        }
+
+        .code-number {
+            color: #cc00cc;
+        }
+
+        .code-boolean {
+            color: #000033;
+        }
+
+        .code-null {
+            color: magenta;
+        }
+
+        .code-key {
+            color: #003377;
+            font-weight: bold;
+        }
+
+        .coment-content {
+            color: green;
+        }
+
+        .jq22-container {
+            float: left;
+        }
+
+        .out_box {
+            border: 1px solid red;
+            width: 800px;
+            height: 780px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="jq22-container">
+        <div class="container">
+            <div class="row">
+                <textarea class="form-control" id="json_input_in" rows="15"></textarea>
+            </div>
+            <input type="button" value="格式化" onclick="testFormatJSON('in')" />
+        </div>
+        <!-- <pre id="json_renderer"></pre> -->
+        <div id="xmlStr_in" class="out_box"></div>
+    </div>
+
+    <div class="jq22-container" style="margin-left: 20px;">
+        <div class="container">
+            <div class="row">
+                <textarea class="form-control" id="json_input_out" rows="15"></textarea>
+            </div>
+            <input type="button" value="格式化" onclick="testFormatJSON('out')" />
+        </div>
+        <!-- <pre id="json_renderer"></pre> -->
+        <div id="xmlStr_out" class="out_box"></div>
+    </div>
+</body>
+
+</html>
