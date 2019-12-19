@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Header xmlns:msg="http://soa.haid.com/MsgHeader" xmlns:osb="http://soa.haid.com/OSB_CREDIT_CREDIT_HQ_InquirySyncOrgSrv" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"></soapenv:Header>
+  <soapenv:Body xmlns:msg="http://soa.haid.com/MsgHeader" xmlns:osb="http://soa.haid.com/OSB_CREDIT_CREDIT_HQ_InquirySyncOrgSrv" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">  
+    <osb:InputParameters> 
+      <osb:MSGHEADER> 
+        <msg:SOURCESYSTEMID>1</msg:SOURCESYSTEMID>  
+        <msg:SOURCESYSTEMNAME>1</msg:SOURCESYSTEMNAME>  
+        <msg:TOKEN>******</msg:TOKEN>  
+        <msg:USER_ID>1</msg:USER_ID>  
+        <msg:USER_NAME>******</msg:USER_NAME>  
+        <msg:USER_PASSWD>******</msg:USER_PASSWD>  
+        <msg:SUBMIT_DATE>2019-02-22T10:35:59</msg:SUBMIT_DATE>  
+        <msg:PAGE_SIZE>1</msg:PAGE_SIZE>  
+        <msg:CURRENT_PAGE>1</msg:CURRENT_PAGE>  
+        <msg:TOTAL_RECORD>1</msg:TOTAL_RECORD>  
+        <msg:PROVINCE_CODE>1</msg:PROVINCE_CODE>  
+        <msg:ROUTE_CODE>1</msg:ROUTE_CODE>  
+        <msg:TRACE_ID>1</msg:TRACE_ID>  
+        <msg:RESERVED_1>1</msg:RESERVED_1>  
+        <msg:RESERVED_2>1</msg:RESERVED_2> 
+      </osb:MSGHEADER>  
+      <osb:INPUTCOLLECTION> 
+        <!--Zero or more repetitions:-->  
+        <osb:INPUTCOLLECTION_ITEM> 
+          <osb:INPUT_JSON>{changeTime:"2018-09-12 00:00:00",acckey:"y47681jkx9021xzoq0028663gfropl186043"}</osb:INPUT_JSON> 
+        </osb:INPUTCOLLECTION_ITEM> 
+      </osb:INPUTCOLLECTION> 
+    </osb:InputParameters> 
+  </soapenv:Body>
+</soapenv:Envelope>
