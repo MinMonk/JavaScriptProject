@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../js/jquery-1.11.3.min.js"></script>
+    <script src="../js/demo6.js"></script>
+    <title>轮播滚动</title>
+
+    <style>
+        .parent {
+            width: 400px;
+            height: 300px;
+            border: 1px solid red;
+            overflow: hidden;
+        }
+
+        .child {
+            border: 1px solid green;
+            position: relative;
+            display: flex;
+        }
+
+        .sroll1,
+        .sroll2 {
+            width: 400px;
+            height: 300px;
+            float: left;
+            flex-shrink: 0;
+        }
+
+        .sroll1 {
+            background-color: bisque;
+        }
+
+        .sroll2 {
+            background-color: brown;
+        }
+
+        .tip {
+            position: fixed;
+            top: 280px;
+            left: 200px;
+        }
+
+        #btn span {
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            margin-top: -20px;
+            background: #fff;
+            cursor: pointer;
+            line-height: 40px;
+            text-align: center;
+            font-weight: bold;
+            font-family: '黑体';
+            font-size: 30px;
+            color: #000;
+            opacity: 0.5;
+            border: 1px solid #fff;
+        }
+
+        .left {
+            left: 5px;
+            top: 150px;
+        }
+
+        .right {
+            left: 360px;
+            top: 150px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="parent">
+        <div class="child">
+            <div class="sroll1"></div>
+            <div class="sroll2"></div>
+        </div>
+        <div id="btn">
+            <span class="left" onclick="topTab()">&lt;</span>
+            <span class="right" onclick="nextTab()">&gt;</span>
+        </div>
+    </div>
+</body>
+
+</html>
