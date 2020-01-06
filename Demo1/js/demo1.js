@@ -13,8 +13,10 @@ function testFormatJSON(type) {
             $("#xmlStr_" + type).html(obj.htmlContent);
             var valueData = obj.valueData;
             let index = 0;
-            valueData.forEach(item => {
-                let data = eval('(' + item + ')');
+
+            // 部分浏览器不支持foreach这种写法，这里新增兼容性写法
+            for (var j = 0; j < valueData.length; j++) {
+                let data = eval('(' + valueData[j] + ')');
                 let dataLength = getJsonLength(data)
                 let collapsedFlag = dataLength >= 15 ? true : false;
                 console.log(collapsedFlag);
@@ -24,7 +26,20 @@ function testFormatJSON(type) {
                     withQuotes: true,
                     withLinks: false
                 });
-            });
+            }
+
+            // valueData.forEach(item => {
+            //     let data = eval('(' + item + ')');
+            //     let dataLength = getJsonLength(data)
+            //     let collapsedFlag = dataLength >= 15 ? true : false;
+            //     console.log(collapsedFlag);
+            //     $("#json_renderer_" + type + "_" + index++).jsonViewer(data, {
+            //         collapsed: collapsedFlag,
+            //         rootCollapsable: true,
+            //         withQuotes: true,
+            //         withLinks: false
+            //     });
+            // });
         }
     }
 }
