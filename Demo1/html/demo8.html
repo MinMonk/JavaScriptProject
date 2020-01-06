@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>JS Bin</title>
+  <link rel="stylesheet" href="../plugins/jquery-jsonview/jquery.jsonview.css" />
+  <script src="../js/jquery-1.11.3.min.js"></script>
+  <script type="text/javascript" src="../plugins/jquery-jsonview/jquery.jsonview.js"></script>
+</head>
+
+<script>
+var json = {"hey": "guy","anumber": 243,"anobject": {"whoa": "nuts","anarray": [1,2,"thr<h1>ee"],"anotherarray": [1, 2], "more":"stuff"},"awesome": true,"bogus": false,"meaning": null, "japanese":"明日がある。", "link": "http://jsonview.com", "notLink": "http://jsonview.com is great"};
+    
+    $(function() {
+      $('#json').JSONView(json);
+      
+      $('#collapse-btn').on('click', function() {
+        $('#json').JSONView('collapse');
+      });
+      
+      $('#expand-btn').on('click', function() {
+        $('#json').JSONView('expand');
+      });
+      
+      $('#toggle-btn').on('click', function() {
+        $('#json').JSONView('toggle');
+      });
+      
+      $('#toggle-level1-btn').on('click', function() {
+        $('#json').JSONView('toggle', 1);
+      });
+      
+      $('#toggle-level2-btn').on('click', function() {
+        $('#json').JSONView('toggle', 2);
+      });
+    });
+    
+    
+</script>
+<body>
+  <br/>
+  <button id="collapse-btn">Collapse</button>
+  <button id="expand-btn">Expand</button>
+  <button id="toggle-btn">Toggle</button>
+  <button id="toggle-level1-btn">Toggle level1</button>
+  <button id="toggle-level2-btn">Toggle level2</button>     
+  
+  <div id="json" style="border: 1px solid red;width: 800px;height: 400px;"></div>
+</body>
+</html>

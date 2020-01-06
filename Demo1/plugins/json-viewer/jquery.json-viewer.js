@@ -3,7 +3,7 @@
  * @author: Alexandre Bodelot <alexandre.bodelot@gmail.com>
  * @link: https://github.com/abodelot/jquery.json-viewer
  */
-(function($) {
+(function ($) {
 
   /**
    * Check if arg is either an array with at least 1 element, or a dict with at least 1 key
@@ -101,12 +101,35 @@
     return html;
   }
 
+
+  if (typeof Object.assign != 'function') {
+    Object.assign = function (target) {
+      'use strict';
+      if (target == null) {
+        throw new TypeError('Cannot convert undefined or null to object');
+      }
+
+      target = Object(target);
+      for (var index = 1; index < arguments.length; index++) {
+        var source = arguments[index];
+        if (source != null) {
+          for (var key in source) {
+            if (Object.prototype.hasOwnProperty.call(source, key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+      }
+      return target;
+    };
+  }
+
   /**
    * jQuery plugin method
    * @param json: a javascript object
    * @param options: an optional options hash
    */
-  $.fn.jsonViewer = function(json, options) {
+  $.fn.jsonViewer = function (json, options) {
     // Merge user options with default options
     options = Object.assign({}, {
       collapsed: false,
@@ -116,7 +139,7 @@
     }, options);
 
     // jQuery chaining
-    return this.each(function() {
+    return this.each(function () {
 
       // Transform to HTML
       var html = json2html(json, options);
@@ -130,7 +153,7 @@
 
       // Bind click on toggle buttons
       $(this).off('click');
-      $(this).on('click', 'a.json-toggle', function() {
+      $(this).on('click', 'a.json-toggle', function () {
         var target = $(this).toggleClass('collapsed').siblings('ul.json-dict, ol.json-array');
         target.toggle();
         if (target.is(':visible')) {
@@ -144,7 +167,7 @@
       });
 
       // Simulate click on toggle button when placeholder is clicked
-      $(this).on('click', 'a.json-placeholder', function() {
+      $(this).on('click', 'a.json-placeholder', function () {
         $(this).siblings('a.json-toggle').click();
         return false;
       });
