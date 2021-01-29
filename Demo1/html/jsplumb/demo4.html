@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <script type="text/javascript" src="../../plugins/jquery/jquery-1.11.3.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../../plugins/jquery/jquery-ui-1.9.2-min.js" charset="UTF-8"></script> -->
+    <script type="text/javascript" src="../../plugins/jsplumb/jsplumb.2.12.0.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../../js/jsplumb/demo4.js" charset="UTF-8"></script>
+    <title>Document</title>
+    <style>
+        .container {
+            padding: 20px;
+            border: 1px solid #33acfb;
+            width: 800px;
+            height: 400px;
+            position: relative;
+        }
+
+        .btn-small {
+            padding: 2px 10px;
+            border-radius: 2px;
+            background-image: none;
+        }
+
+        .item {
+            position: absolute;
+            height: 80px;
+            width: 80px;
+            /* border: 1px solid rgba(51, 172, 251, 1); */
+        }
+
+        .success_div {
+            color: #0e76a8;
+            background-color: rgba(51, 172, 251, .1);
+            border: 1px solid rgba(51, 172, 251, 1) !important;
+        }
+
+        .error_div {
+            color: red;
+            background-color: rgba(255, 166, 0, 0.856);
+            border: 1px solid red !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="diagramContainer">
+        <div id="item_left" class="item success_div btn-small">1111</div>
+        <div id="item_right" class="item success_div btn-small" style="left:150px;">2222</div>
+        <div id="item_right2_1" class="item error_div btn-small" style="left:150px;top:150px">3333</div>
+        <div id="item_right2" class="item success_div btn-small" style="left:350px;">4444</div>
+        <div id="item_right3" class="item success_div btn-small" style="left:350px;top:150px">5555</div>
+    </div>
+
+</body>
+
+</html>

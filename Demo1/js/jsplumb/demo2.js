@@ -11,7 +11,7 @@ jsPlumb.ready(function () {
         endpointStyle: {
             fill: 'green', //设置连接端点的颜色
             outlineStroke: 'red', //设置连接端点的border颜色
-            outlineWidth: 5  //怀疑是设置border宽度的，但是设置了么有作用
+            outlineWidth: 5 //怀疑是设置border宽度的，但是设置了么有作用
         },
         overlays: [
             ['Arrow', { //[Arrow:一个可配置的箭头, Label:标签，可以在链接上显示文字信息, PlainArrow:原始类型的箭头, Diamond:菱形箭头, Custom:自定义类型 ]
@@ -29,6 +29,8 @@ jsPlumb.ready(function () {
     }, commonStyle)
 
     // 控制节点是否支持拖拽
-    jsPlumb.draggable('item_left')
+    jsPlumb.draggable('item_left', {
+        containment: 'diagramContainer'
+    })
     jsPlumb.draggable('item_right')
 })
