@@ -9,16 +9,6 @@
         },
         mtAfterDrop: function (params) {
 
-        },
-        connectorPaintStyle: {
-            lineWidth: 3,
-            strokeStyle: "#49afcd",
-            joinstyle: "round"
-        },
-        //鼠标经过样式
-        connectorHoverStyle: {
-            lineWidth: 3,
-            strokeStyle: "#8ec22e"
         }
     }
 
@@ -26,31 +16,6 @@
      * 初始化jsPlumb默认参数
      */
     var initJsPlumbDefaultParam = function () {
-        // jsPlumb.importDefaults({
-        //     DragOptions: {
-        //         cursor: 'pointer'
-        //     },
-        //     EndpointStyle: {
-        //         fillStyle: '#225588'
-        //     },
-        //     Endpoint: ["Dot", {
-        //         radius: 1
-        //     }],
-        //     ConnectionOverlays: [
-        //         ["Arrow", {
-        //             location: 1
-        //         }],
-        //         ["Label", {
-        //             location: 0.25,
-        //             id: "label",
-        //             cssClass: "aLabel"
-        //         }]
-        //     ],
-        //     Anchor: 'Continuous',
-        //     ConnectorZIndex: 5,
-        //     ConnectionsDetachable: false
-        // });
-
         // 设置页面上的控件允许拖拽,并设置只能在容器范围内拖拽
         var enableDraggable = defaults.enableDraggable;
         if (enableDraggable) {
@@ -63,6 +28,7 @@
         jsPlumb.bind("connection", function (info) {
             setConnections(info.connection)
         });
+        
         //绑定删除connection事件
         jsPlumb.bind("jsPlumbConnectionDetached", function (info) {
             setConnections(info.connection, true);
@@ -72,7 +38,8 @@
 
     /**
      * 根据data初始化界面中的元素item
-     * @param {*} data 
+     * @param {*} _canvas  画布div
+     * @param {*} data 画图数据
      */
     var initItem = function (_canvas, data) {
         $.each(data, function (i, row) {
@@ -91,6 +58,7 @@
             _itemDiv.attr("style", style);
             _itemDiv.attr("line", row.line);
             _itemDiv.attr("process_id", row.id);
+            _itemDiv.attr("process_to", row.process_to);
             _itemDiv.addClass("item btn-small  " + _class);
             _itemDiv.html(label_text);
             _canvas.append(_itemDiv);
@@ -98,78 +66,9 @@
     }
 
     /**
-     * 初始化端点
+     * 连接成功的回调函数
+     * @param {*} params 
      */
-    var initEndPoints = function () {
-        $(".item").each(function (i, e) {
-            var _faces = ["top", "right", "bottom", "left"];
-            var e = $(e);
-            if (e && $(e.attr("line"))) {
-                var line = e.attr("line");
-                if (line == 1) {
-                    _faces = ["top"];
-                } else if (line == 2) {
-                    _faces = ["right"];
-                } else if (line == 3) {
-                    _faces = ["bottom"];
-                } else if (line == 4) {
-                    _faces = ["left"];
-                } else if (line == 13) {
-                    _faces = ["top", "bottom"];
-                } else if (line == 24) {
-                    _faces = ["right", "left"];
-                }
-            }
-
-            jsPlumb.makeSource($(e), {
-                anchor: ["Continuous", {
-                    faces: _faces
-                }],
-                endpoint: ["Dot", {
-                    radius: 1
-                }],
-                connector: ["Flowchart", {
-                    stub: [30, 30]
-                }],
-                dragOptions: {},
-                maxConnections: -1
-            });
-
-            jsPlumb.makeTarget($(e), {
-                anchor: ["Continuous", {
-                    faces: _faces
-                }],
-                dropOptions: {
-                    hoverClass: "hover",
-                    activeClass: "active"
-                },
-                endpoint: ["Dot", {
-                    radius: 1
-                }],
-                maxConnections: -1,
-                beforeDrop: function (params) {
-                    if (params.sourceId == params.targetId) return false;
-                    var j = 0;
-                    $('#activity_process_info').find('input').each(function (i) {
-                        var str = $('#' + params.sourceId).attr('process_id') + ',' + $('#' + params.targetId).attr('process_id');
-                        if (str == $(this).val()) {
-                            j++;
-                            return;
-                        }
-                    })
-                    if (j > 0) {
-                        defaults.fnRepeat();
-                        return false;
-                    } else {
-                        mtAfterDrop(params);
-                        return true;
-                    }
-                }
-            });
-        });
-    }
-
-    //连接成功回调函数
     function mtAfterDrop(params) {
         defaults.mtAfterDrop({
             sourceId: $("#" + params.sourceId).attr('process_id'),
@@ -205,6 +104,64 @@
         jsPlumb.repaintEverything(); //重画
     };
 
+    /**
+     * 遍历页面元素，完成连线操作
+     */
+    var conn_ = function () {
+        $(".item").each(function (i, e) {
+            var item = $(this);
+            var process_id = item.attr("process_id");
+            var process_to = item.attr("process_to");
+
+            if (process_to && process_to.indexOf(",") > 0) {
+                var _to = process_to.split(",");
+                _to.forEach(function (e) {
+                    if (e) {
+                        connect(process_id, e.trim())
+                    }
+                })
+            }
+        });
+    }
+
+    // 连线方法
+    var connect = function (sourceId, targetId) {
+        // 设置连线的公共样式
+        var commonStyle = {
+            endpoint: ["Dot", {
+                radius: 0.5
+            }], //控制端点类型，形状[Dot:圆点 Rectangle：方块]
+            paintStyle: {
+                stroke: 'lightgray', // 控制连接线条颜色
+                strokeWidth: 3 // 控制连接线条粗细
+            },
+            connector: ["Flowchart", {//设置连线为折线图
+                stub: [30, 30]
+            }],
+            anchor: 'Continuous',
+            connectorZIndex: 5,
+            overlays: [
+                ["Arrow", {
+                    location: 1  //设置箭头的位置
+                }]
+            ]
+        }
+
+        // 如果目标段的状态是失败的，就让连线为红色
+        var _error = $("#item_" + targetId).hasClass("error-item");
+        if (_error) {
+            commonStyle.paintStyle = {
+                stroke: 'red', // 控制连接线条颜色
+                strokeWidth: 3 // 控制连接线条粗细
+            }
+        }
+
+        jsPlumb.connect({
+            source: "item_" + sourceId,
+            target: "item_" + targetId
+        }, commonStyle);
+    }
+
 
     $.fn.drawPic = function (options) {
         var _canvas = $(this);
@@ -233,22 +190,31 @@
         var processData = defaults.data;
         initItem(_canvas, processData);
         initJsPlumbDefaultParam();
-        initEndPoints();
 
         // 绑定单击事件
+        var firstTime = 0;
+        var lastTime = 0;
+        var interval = 200;
+        var clickKey = false;
         $(".item").on('click', function () {
-            defaults.fnClick();
+            //激活
+            _canvas.find('#serviceview_active_id').val($(this).attr("process_id"));
+            var obj = this;
+            if (clickKey) {
+                defaults.fnClick();
+                clickKey = false;
+            }
+        }).on('mousedown', function () {
+            firstTime = new Date().getTime();
+        }).on('mouseup', function () {
+            lastTime = new Date().getTime();
+            if (lastTime - firstTime < interval) {
+                clickKey = true;
+            }
         });
 
         jsPlumb.ready(function () {
-            jsPlumb.connect({
-                source: 'item_3',
-                target: 'item_4'
-            })
-            jsPlumb.connect({
-                source: 'item_3',
-                target: 'item_5'
-            })
+            conn_();
         })
 
         var extendFunction = {

@@ -1,114 +1,52 @@
-// $(function(){
-//     $("#diagramContainer").draggable({containment: '#background'});
-// })
+$(function(){
+
+    var data = [
+        {
+            "id": "1",
+            "status": "Y",
+            "label_text": "label_text1",
+            "process_to": "2,3",
+            "style": ""
+        }, {
+            "id": "2",
+            "status": "Y",
+            "label_text": "label_text2",
+            "process_to": "",
+            "style": "left:150px;"
+        }, {
+            "id": "3",
+            "status": "N",
+            "label_text": "label_text3",
+            "process_to": "4, 5",
+            "style": "left:150px;top:150px"
+        }, {
+            "id": "4",
+            "status": "Y",
+            "label_text": "label_text4",
+            "process_to": "",
+            "style": "left:350px;"
+        }, {
+            "id": "5",
+            "status": "Y",
+            "label_text": "label_text5",
+            "process_to": "",
+            "style": "left:350px;top:150px"
+        }
+        
+    ]
 
 
-var successStyle={
-    PaintStyle: {
-        stroke: '#49afcd', // 控制连接线条颜色
-        strokeWidth: 3 // 控制连接线条粗细
-    },
-    ConnectorStyle: {
-        lineWidth: 3,
-        strokeStyle: "#49afcd",
-        joinstyle: "round"
-    },
-    //鼠标经过样式
-    HoverPaintStyle: {
-        lineWidth: 3,
-        strokeStyle: "#8ec22e"
-    }
-}
-
-var errorStyle={
-    PaintStyle: {
-        stroke: 'red', // 控制连接线条颜色
-        strokeWidth: 3 // 控制连接线条粗细
-    },
-    ConnectorStyle: {
-        lineWidth: 3,
-        strokeStyle: "red",
-        joinstyle: "round"
-    },
-    //鼠标经过样式
-    HoverPaintStyle: {
-        lineWidth: 3,
-        strokeStyle: "#8ec22e"
-    }
-}
-
-
-jsPlumb.importDefaults({
-    Connector: ['Flowchart'],
-    DragOptions: {
-        cursor: 'pointer'
-    },
-    EndpointStyle: {
-        fillStyle: '#225588'
-    },
-    Endpoint: ["Dot", {
-        radius: 1
-    }],
-    ConnectionOverlays: [
-        ["Arrow", {
-            location: 1
-        }],
-        ["Label", {
-            location: 0.25,
-            id: "label",
-            cssClass: "aLabel"
-        }]
-    ],
-    PaintStyle: successStyle.PaintStyle,
-    ConnectorStyle: successStyle.ConnectorStyle,
-    HoverPaintStyle: successStyle.HoverPaintStyle,
-    Anchor: 'Continuous',
-    ConnectorZIndex: 5,
-    ConnectionsDetachable: false
+    var contains = $("#diagramContainer").drawPic({
+        "data" : data,
+        enableDraggable: true,
+        fnClick: function(){
+            alert("重写单击单击");
+        }
+    });
+    // contains.refresh();
+    // var c = contains.return_();
+    // console.log(c);
 })
 
 
-jsPlumb.ready(function () {
-    jsPlumb.setContainer(document.getElementById("diagramContainer"))
-    jsPlumb.makeSource(jsPlumb.getSelector(".item"), {
-        dropOptions: {
-            hoverClass: "hover",
-            activeClass: "active"
-        },
-        maxConnections: -1
-    });
 
-    jsPlumb.makeTarget(jsPlumb.getSelector(".item"), {
-        dropOptions: {
-            hoverClass: "hover",
-            activeClass: "active"
-        },
-        maxConnections: -1
-    });
-
-
-    // 控制节点是否支持拖拽
-    jsPlumb.draggable(jsPlumb.getSelector(".item"), {
-        containment: 'parent'
-    });
-
-    jsPlumb.connect({
-        source: 'item_left',
-        target: 'item_right',
-    })
-    jsPlumb.connect({
-        source: 'item_left',
-        target: 'item_right2_1',
-        paintStyle: errorStyle.PaintStyle,
-        connectorStyle: errorStyle.ConnectorStyle,
-        hoverPaintStyle: errorStyle.HoverPaintStyle
-    })
-    jsPlumb.connect({
-        source: 'item_right2_1',
-        target: 'item_right2',
-    })
-    jsPlumb.connect({
-        source: 'item_right2_1',
-        target: 'item_right3',
-    })
-})
