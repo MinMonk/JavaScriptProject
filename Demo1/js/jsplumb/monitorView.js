@@ -25,7 +25,7 @@
         }
 
         //绑定添加连接操作。画线-input text值  拒绝重复连接
-        jsPlumb.bind("connection", function (info) {
+        jsPlumb.bind("jsPlumbConnection", function (info) {
             setConnections(info.connection)
         });
         
@@ -43,16 +43,22 @@
      */
     var initItem = function (_canvas, data) {
         $.each(data, function (i, row) {
-            var itemDiv = document.createElement('div');
+        	
             var itemId = "item_" + row.id,
                 style = row.style,
                 status = row.status,
                 label_text = row.label_text;
+            
+            if(!label_text){
+            	return false;
+            }
+            
             var _class = "success-item";
             if (status && "N" == status) {
                 _class = "error-item "
             }
 
+            var itemDiv = document.createElement('div');
             var _itemDiv = $(itemDiv)
             _itemDiv.attr("id", itemId);
             _itemDiv.attr("style", style);
@@ -163,7 +169,7 @@
     }
 
 
-    $.fn.drawPic = function (options) {
+    $.fn.monitorView = function (options) {
         var _canvas = $(this);
         //右键步骤的步骤号
         _canvas.append('<input type="hidden" id="serviceview_active_id" value="0"/><input type="hidden" id="leipi_copy_id" value="0"/>');
