@@ -1,0 +1,47 @@
+var data = [
+    {
+        "id": "1",
+        "status": "Y",
+        "label_text": "label_text1",
+        "process_to": "3,",
+        "style": "left:123.5px;top:269px;"
+    }, {
+        "id": "3",
+        "status": "N",
+        "label_text": "label_text3",
+        "process_to": "4, 5, 6, 7, 8",
+        "style": "left:349px;top:269px"
+    }, {
+        "id": "4",
+        "status": "Y",
+        "label_text": "label_text4",
+        "process_to": "",
+        "style": "left:574.5px;top:45px"
+    }, {
+        "id": "5",
+        "status": "Y",
+        "label_text": "label_text5",
+        "process_to": "",
+        "style": "left:574.5px;top:156px"
+    }, {
+        "id": "6",
+        "status": "Y",
+        "label_text": "label_text6",
+        "process_to": "",
+        "style": "left:574.5px;top:267px"
+    }, {
+        "id": "7",
+        "status": "Y",
+        "label_text": "label_text7",
+        "process_to": "",
+        "style": "left:574.5px;top:378px"
+    }, {
+        "id": "8",
+        "status": "Y",
+        "label_text": "label_text8",
+        "process_to": "",
+        "style": "left:574.5px;top:489px"
+    }
+
+    
+]

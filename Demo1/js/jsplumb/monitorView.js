@@ -28,7 +28,7 @@
         jsPlumb.bind("jsPlumbConnection", function (info) {
             setConnections(info.connection)
         });
-        
+
         //绑定删除connection事件
         jsPlumb.bind("jsPlumbConnectionDetached", function (info) {
             setConnections(info.connection, true);
@@ -43,16 +43,16 @@
      */
     var initItem = function (_canvas, data) {
         $.each(data, function (i, row) {
-        	
+
             var itemId = "item_" + row.id,
                 style = row.style,
                 status = row.status,
                 label_text = row.label_text;
-            
-            if(!label_text){
-            	return false;
+
+            if (!label_text) {
+                return false;
             }
-            
+
             var _class = "success-item";
             if (status && "N" == status) {
                 _class = "error-item "
@@ -119,13 +119,18 @@
             var process_id = item.attr("process_id");
             var process_to = item.attr("process_to");
 
-            if (process_to && process_to.indexOf(",") > 0) {
-                var _to = process_to.split(",");
-                _to.forEach(function (e) {
-                    if (e) {
-                        connect(process_id, e.trim())
-                    }
-                })
+            if (process_to) {
+                if(process_to.indexOf(",") > 0){
+                    var _to = process_to.split(",");
+                    _to.forEach(function (e) {
+                        if (e) {
+                            connect(process_id, e.trim())
+                        }
+                    })
+                }else{
+                    connect(process_id, process_to.trim())
+                }
+                
             }
         });
     }
@@ -141,8 +146,11 @@
                 stroke: 'lightgray', // 控制连接线条颜色
                 strokeWidth: 3 // 控制连接线条粗细
             },
-            connector: ["Flowchart", {//设置连线为折线图
-                stub: [30, 30]
+            connector: ["Flowchart", {//设置连线为折线图,连接线的样式种类有[Bezier],[Flowchart],[StateMachine ],[Straight ]
+                stub: [0, 0],
+                // gap: 0, // 连线到锚点的距离
+                // cornerRadius: 5, // 流程线转角的圆角
+                // alwaysRespectStubs: true
             }],
             anchor: 'Continuous',
             connectorZIndex: 5,

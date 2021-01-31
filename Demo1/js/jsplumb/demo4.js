@@ -1,67 +1,76 @@
+
+/**
+ * 计算元素之间的间距
+ * @param {*} docuemntId 元素所在父容器的docuemntId
+ * @param {*} _num 元素的个数
+ * @param {*} _type 计算的类型[width:左右间距, height:上下间距]
+ * @param {*} _padding 元素的内间距
+ * @param {*} _border 元素的边框总宽度(边框分上下or左右)
+ * @param {*} _item 元素的宽度or高度
+ * @param {*} _minMargin 元素之间的最小间距
+ */
+function calcItemMargin(docuemntId, _num, _type, _padding, _border, _item, _minMargin) {
+    _type = _type ? _type : "width";
+    
+    _border = _border ? _border : 2;
+
+    var item = 0;
+    if ("width" == _type) {
+        _item = _item ? _item : 80;
+        _minMargin = _minMargin ? _minMargin : 50;
+        _padding = _padding ? _padding : 20;
+        item = $("#" + docuemntId).width();
+    } else {
+        _item = _item ? _item : 60;
+        _minMargin = (_minMargin && _minMargin > 20) ? _minMargin : 20;
+        _padding = _padding ? _padding : 4;
+        item = $("#" + docuemntId).height();
+    }
+    var _margin = (item - (_item + _border + _padding) * _num) / (_num + 1);
+    _margin = _margin >= _minMargin ? _margin : _minMargin;
+    return _margin;
+}
+
 /**
  * 计算元素位置
- *
+ * @param {*} num 元素个数
+ * @param {*} margin 元素之间的外间距
+ * @param {*} _len 元素的宽度or高度
+ * @param {*} _padding 元素的外间距
+ * @param {*} _border 元素的边框总宽度(边框分上下or左右)
  */
-function calcPosition(num, width, height, margin){
-    margin = margin ? margin : 10;
-    width = width ? width : 80;
-    height = height ? height : 60;
-    var _height = $("#diagramContainer").height();
-    var _width = $("#diagramContainer").width();
-    console.log("_height:" + _height);
-    console.log("_width:" + _width);
-
-    var position = "";
-    var _top = (_height - height - margin * (num-1))/(num + 1);
-    console.log("_top:" + _top)
-};
-
-$(function(){
-
-    calcPosition(1);
-    calcPosition(2);
-
-
-    var data = [
-        {
-            "id": "1",
-            "status": "Y",
-            "label_text": "label_text1",
-            "process_to": "2,3",
-            "style": "top:170px;"
-        }, {
-            "id": "2",
-            "status": "Y",
-            "label_text": "label_text2",
-            "process_to": "",
-            "style": "left:200px;top:110px"
-        }, {
-            "id": "3",
-            "status": "N",
-            "label_text": "label_text3",
-            "process_to": "4, 5",
-            "style": "left:200px;top:190px"
-        }, {
-            "id": "4",
-            "status": "Y",
-            "label_text": "label_text4",
-            "process_to": "",
-            "style": "left:350px;"
-        }, {
-            "id": "5",
-            "status": "Y",
-            "label_text": "label_text5",
-            "process_to": "",
-            "style": "left:350px;top:150px"
+function calcItemPosition(num, margin, _len, _padding, _border) {
+    _padding = _padding ? _padding : 20;
+    _border = _border ? _border : 2;
+    var positions = [];
+    var position = 0;
+    for (var i = 0; i < num; i++) {
+        if (i > 0) {
+            position += (_len + margin + _border + _padding);
+        } else {
+            position += margin;
         }
-        
-    ]
+        positions.push(position);
+    }
+    return positions;
+}
 
+$(function () {
+
+    var aa = calcItemMargin("diagramContainer", 3, "width");
+    var bb = calcItemPosition(3, aa, 80, 20);
+    console.log(bb);
+
+    aa = calcItemMargin("diagramContainer", 5, "height");
+    bb = calcItemPosition(5, aa, 60, 4);
+    console.log(bb);
+
+    console.log(data);
 
     var contains = $("#diagramContainer").monitorView({
-        "data" : data,
+        "data": data,
         enableDraggable: true,
-        fnClick: function(){
+        fnClick: function () {
             alert("重写单击单击");
         }
     });
@@ -69,7 +78,7 @@ $(function(){
     // var c = contains.return_();
     // console.log(c);
 
-   
+
 })
 
 
