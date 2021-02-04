@@ -1,8 +1,10 @@
 (function ($) {
     var defaults = {
         data: {},
+        reDraw: true,//每次重绘
+        enableDraggable: true,//允许拖拽
         fnClick: function () {
-            alert("单击");
+        	console.log("单击");
         },
         fnRepeat: function () {
             console.log("步骤连接重复");
@@ -43,7 +45,6 @@
      */
     var initItem = function (_canvas, data) {
         $.each(data, function (i, row) {
-
             var itemId = "item_" + row.id,
                 style = row.style,
                 status = row.status,
@@ -130,7 +131,6 @@
                 }else{
                     connect(process_id, process_to.trim())
                 }
-                
             }
         });
     }
@@ -143,7 +143,7 @@
                 radius: 0.5
             }], //控制端点类型，形状[Dot:圆点 Rectangle：方块]
             paintStyle: {
-                stroke: 'lightgray', // 控制连接线条颜色
+                stroke: '#49afcd', // 控制连接线条颜色
                 strokeWidth: 3 // 控制连接线条粗细
             },
             connector: ["Flowchart", {//设置连线为折线图,连接线的样式种类有[Bezier],[Flowchart],[StateMachine ],[Straight ]
@@ -175,32 +175,33 @@
             target: "item_" + targetId
         }, commonStyle);
     }
-
+    
 
     $.fn.monitorView = function (options) {
-        var _canvas = $(this);
-        //右键步骤的步骤号
-        _canvas.append('<input type="hidden" id="serviceview_active_id" value="0"/><input type="hidden" id="leipi_copy_id" value="0"/>');
-        _canvas.append('<div id="activity_process_info"></div>');
-
         /**
          * 将入参绑定到当前类的私有变量defaults中，完成值的覆盖.
          * 有点类似于java的构造方法，defauls变量为当前类的私有变量
          *  */
         $.each(options, function (i, val) {
-            if (typeof val == 'object' && defaults[i])
-                $.extend(defaults[i], val);
-            else
-                defaults[i] = val;
+            defaults[i] = val;
         });
 
-        jsPlumb.setContainer(_canvas);
-        // if ($.browser.msie && $.browser.version < '9.0') { //ie9以下，用VML画图
-        //     jsPlumb.setRenderMode(jsPlumb.VML);
-        // } else { //其他浏览器用SVG
-        //     jsPlumb.setRenderMode(jsPlumb.SVG);
-        // }
+        if(defaults.reDraw){
+        	$(".item").remove();
+        	jsPlumb.ready(function () {
+        		jsPlumb.deleteEveryEndpoint();
+        		jsPlumb.deleteEveryConnection();
+        		$('#activity_process_info').html('');
+        		jsPlumb.repaintEverything();
+        	})
+        }
 
+        //右键步骤的步骤号
+        var _canvas = $(this);
+        jsPlumb.setContainer(_canvas);
+        _canvas.append('<input type="hidden" id="serviceview_active_id" value="0"/><input type="hidden" id="leipi_copy_id" value="0"/>');
+        _canvas.append('<div id="activity_process_info"></div>');
+        
         var processData = defaults.data;
         initItem(_canvas, processData);
         initJsPlumbDefaultParam();
@@ -228,6 +229,10 @@
         });
 
         jsPlumb.ready(function () {
+        	jsPlumb.deleteEveryEndpoint();
+        	jsPlumb.deleteEveryConnection();
+        	$('#activity_process_info').html('');
+            jsPlumb.repaintEverything();
             conn_();
         })
 
@@ -238,7 +243,4 @@
         }
         return extendFunction;
     }
-
-
-
 })(jQuery);
