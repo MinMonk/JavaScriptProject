@@ -17,6 +17,56 @@ function testFormatJSON(type) {
             // 部分浏览器不支持foreach这种写法，这里新增兼容性写法
             for (var j = 0; j < valueData.length; j++) {
                 let data = eval('(' + valueData[j] + ')');
+
+
+
+                /**
+                 * update by 2021-2-23
+                 * 海大项目：针对rest代理rest的服务日志，将INPUT_JSON字符串手动转换为JSON对象，再格式化展示出来
+                 * 这种特殊的报文如下所示：
+                 * {
+                 * 	"INPUTCOLLECTION": {
+                 * 		"INPUTCOLLECTION_ITEM": [
+                 * 			{
+                 * 				"INPUT_JSON": "{ \"optUser\": \"037251\", \"billnumber\": \"FFY-SPDW2101210067\", \"appCode\": \"FSSC\", \"tenantCode\": \"100\" }"
+                 * 			}
+                 * 		]
+                 * 	},
+                 * 	"MSGHEADER": {
+                 * 		"SOURCESYSTEMID": "SOA",
+                 * 		"TRACE_ID": "1",
+                 * 		"USER_ID": "1",
+                 * 		"RESERVED_2": "1",
+                 * 		"USER_NAME": "1",
+                 * 		"RESERVED_1": "1",
+                 * 		"USER_PASSWD": "1",
+                 * 		"PROVINCE_CODE": "1",
+                 * 		"ROUTE_CODE": "1",
+                 * 		"SOURCESYSTEMNAME": "1",
+                 * 		"SUBMIT_DATE": "2021-01-22T08:42:03",
+                 * 		"TOTAL_RECORD": "1",
+                 * 		"PAGE_SIZE": "1",
+                 * 		"CURRENT_PAGE": "1",
+                 * 		"TOKEN": "1"
+                 * 	}
+                 * }
+                 * 
+                 */
+                if(data.INPUTCOLLECTION){
+                    var items = data.INPUTCOLLECTION.INPUTCOLLECTION_ITEM;
+                    if(items && item.length > 0){
+                        for(var k = 0; k < items.length; k++){
+                            var item = items[k];
+                            if(item){
+                                var inputJson = item.INPUT_JSON;
+                                if(typeof inputJson == "string"){
+                                    item.INPUT_JSON = eval('(' + inputJson + ')');
+                                }
+                            }
+                        }
+                    }
+                }
+                
                 let dataLength = getJsonLength(data)
                 let collapsedFlag = dataLength >= 15 ? true : false;
                 console.log(collapsedFlag);
@@ -141,9 +191,7 @@ function isJSON(str) {
     if (typeof str == 'string') {
         try {
             if (str.indexOf('{') > -1) {
-                str = str.replace(/(?:\s*['"]*)?([a-zA-Z0-9]+)(?:['"]*\s*)?:/g, "'$1':");
                 var obj = eval('(' + str + ')');
-                // var obj = JSON.parse(str2);
                 if (typeof obj == "object") {
                     return true;
                 } else {
