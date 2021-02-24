@@ -18,8 +18,6 @@ function testFormatJSON(type) {
             for (var j = 0; j < valueData.length; j++) {
                 let data = eval('(' + valueData[j] + ')');
 
-
-
                 /**
                  * update by 2021-2-23
                  * 海大项目：针对rest代理rest的服务日志，将INPUT_JSON字符串手动转换为JSON对象，再格式化展示出来
@@ -54,12 +52,12 @@ function testFormatJSON(type) {
                  */
                 if(data.INPUTCOLLECTION){
                     var items = data.INPUTCOLLECTION.INPUTCOLLECTION_ITEM;
-                    if(items && item.length > 0){
+                    if(items && items.length > 0){
                         for(var k = 0; k < items.length; k++){
                             var item = items[k];
                             if(item){
                                 var inputJson = item.INPUT_JSON;
-                                if(typeof inputJson == "string"){
+                                if(typeof inputJson == "string" && isJSON(inputJson)){
                                     item.INPUT_JSON = eval('(' + inputJson + ')');
                                 }
                             }
